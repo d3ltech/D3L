@@ -214,7 +214,61 @@
   .approach-cell h3{font-size:18px;margin-bottom:10px;}
   .approach-cell p{color:var(--text-muted);font-size:14.5px;}
 
-  /* ---------- CONTACT ---------- */
+  /* ---------- QUOTE CALCULATOR ---------- */
+  .quote{background:var(--bg);border-top:1px solid var(--border);}
+  .quote-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+  @media(max-width:900px){.quote-grid{grid-template-columns:1fr;}}
+  .quote-form{background:var(--surface);padding:36px;}
+  @media(max-width:640px){.quote-form{padding:24px 20px;}}
+  .q-group{margin-bottom:30px;}
+  .q-group:last-child{margin-bottom:0;}
+  .q-group-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .q-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .q-dot.data{background:var(--data);}
+  .q-dot.voice{background:var(--voice);}
+  .q-dot.build{background:var(--build);}
+  .q-group h4{font-size:15.5px;font-weight:600;}
+  .q-rate{font-family:'JetBrains Mono';font-size:11.5px;color:var(--text-muted);margin-bottom:14px;margin-left:18px;}
+  .q-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-left:18px;}
+  .q-row label{font-size:14px;color:var(--text-muted);}
+  .stepper{display:flex;align-items:center;border:1px solid var(--border);border-radius:2px;background:var(--bg-elev);}
+  .stepper button{
+    width:34px;height:34px;background:none;border:none;color:var(--text);font-size:16px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:color .15s;font-family:'JetBrains Mono';
+  }
+  .stepper button:hover{color:var(--data);}
+  .stepper input{
+    width:52px;text-align:center;background:none;border:none;color:var(--text);
+    font-family:'JetBrains Mono';font-size:14px;-moz-appearance:textfield;
+  }
+  .stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .q-divider{height:1px;background:var(--border);margin:26px 0 26px 18px;}
+
+  .quote-summary{background:var(--bg-elev);padding:36px;display:flex;flex-direction:column;}
+  @media(max-width:640px){.quote-summary{padding:24px 20px;}}
+  .quote-summary h4{font-size:13px;font-family:'JetBrains Mono';letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:20px;}
+  .summary-lines{flex:1;display:flex;flex-direction:column;gap:12px;min-height:60px;}
+  .summary-empty{color:var(--text-muted);font-size:14px;font-style:italic;}
+  .summary-line{display:flex;justify-content:space-between;font-size:14px;gap:12px;padding-bottom:12px;border-bottom:1px dashed var(--border);}
+  .summary-line .s-label{color:var(--text);}
+  .summary-line .s-sub{display:block;font-family:'JetBrains Mono';font-size:11px;color:var(--text-muted);margin-top:2px;}
+  .summary-line .s-amt{font-family:'JetBrains Mono';color:var(--data);white-space:nowrap;}
+  .summary-total{
+    margin-top:22px;padding-top:22px;border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:baseline;
+  }
+  .summary-total .t-label{font-family:'JetBrains Mono';font-size:12px;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;}
+  .summary-total .t-amt{font-family:'Space Grotesk';font-size:32px;font-weight:700;color:var(--data);}
+  .quote-note{font-size:12.5px;color:var(--text-muted);margin-top:18px;line-height:1.6;}
+  .quote-cta{
+    margin-top:22px;width:100%;background:var(--data);color:#06110C;border:none;border-radius:2px;
+    padding:14px;font-family:'JetBrains Mono';font-size:13px;font-weight:500;cursor:pointer;text-align:center;
+    transition:background .2s;
+  }
+  .quote-cta:hover{background:#54ecb6;}
+  .quote-cta:disabled{opacity:.4;cursor:not-allowed;}
+
+
   .contact{
     background:var(--bg-elev);
     border-top:1px solid var(--border);
@@ -269,11 +323,12 @@
     </div>
     <div class="nav-links">
       <a href="#services">Services</a>
+      <a href="#quote">Get a Quote</a>
       <a href="#expertise">3CX &amp; PABX</a>
       <a href="#approach">Approach</a>
       <a href="#contact">Contact</a>
     </div>
-    <a href="#contact" class="nav-cta">GET A QUOTE</a>
+    <a href="#quote" class="nav-cta">GET A QUOTE</a>
   </div>
 </nav>
 
@@ -285,7 +340,7 @@
       <h1>We lay the lines your <span class="hl">business</span> runs on.</h1>
       <p>D3L Technologies designs, installs, and manages the structured cabling, network, and voice systems behind reliable business operations — from the first cable run to ongoing support.</p>
       <div class="btn-row">
-        <a href="#contact" class="btn btn-primary">Get a quote →</a>
+        <a href="#quote" class="btn btn-primary">Get a quote →</a>
         <a href="#services" class="btn btn-ghost">View services</a>
       </div>
     </div>
@@ -416,6 +471,94 @@
             <span class="meta-item">Support &amp; updates</span>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="quote" class="quote section-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-eyebrow">Estimate your project</div>
+      <h2>Get a quote</h2>
+      <p>A ballpark estimate based on our standard rates. Final pricing is confirmed after an on-site assessment.</p>
+    </div>
+
+    <div class="quote-grid reveal">
+      <div class="quote-form">
+
+        <div class="q-group">
+          <div class="q-group-head"><span class="q-dot data"></span><h4>Site Assessment</h4></div>
+          <div class="q-rate">Call-outs — R1 750 each · Network points — R1 250 each</div>
+          <div class="q-row" style="margin-bottom:14px;">
+            <label for="callouts">Call-outs</label>
+            <div class="stepper">
+              <button type="button" data-target="callouts" data-dir="-1" aria-label="Decrease call-outs">−</button>
+              <input id="callouts" type="number" min="0" value="0" inputmode="numeric">
+              <button type="button" data-target="callouts" data-dir="1" aria-label="Increase call-outs">+</button>
+            </div>
+          </div>
+          <div class="q-row">
+            <label for="points">Network points</label>
+            <div class="stepper">
+              <button type="button" data-target="points" data-dir="-1" aria-label="Decrease network points">−</button>
+              <input id="points" type="number" min="0" value="0" inputmode="numeric">
+              <button type="button" data-target="points" data-dir="1" aria-label="Increase network points">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-divider"></div>
+
+        <div class="q-group">
+          <div class="q-group-head"><span class="q-dot voice"></span><h4>PABX &amp; 3CX</h4></div>
+          <div class="q-rate">R249 per extension (1–10) · from ext. 11, licensed at R2 349, +R100 per extension thereafter</div>
+          <div class="q-row">
+            <label for="extensions">Extensions needed</label>
+            <div class="stepper">
+              <button type="button" data-target="extensions" data-dir="-1" aria-label="Decrease extensions">−</button>
+              <input id="extensions" type="number" min="0" value="0" inputmode="numeric">
+              <button type="button" data-target="extensions" data-dir="1" aria-label="Increase extensions">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-divider"></div>
+
+        <div class="q-group">
+          <div class="q-group-head"><span class="q-dot build"></span><h4>Consultation</h4></div>
+          <div class="q-rate">Professional IT services — R1 350/hr · Network management — R1 250/hr</div>
+          <div class="q-row" style="margin-bottom:14px;">
+            <label for="ithours">IT services (hrs)</label>
+            <div class="stepper">
+              <button type="button" data-target="ithours" data-dir="-1" aria-label="Decrease IT hours">−</button>
+              <input id="ithours" type="number" min="0" value="0" inputmode="numeric">
+              <button type="button" data-target="ithours" data-dir="1" aria-label="Increase IT hours">+</button>
+            </div>
+          </div>
+          <div class="q-row">
+            <label for="nmhours">Network mgmt (hrs)</label>
+            <div class="stepper">
+              <button type="button" data-target="nmhours" data-dir="-1" aria-label="Decrease network management hours">−</button>
+              <input id="nmhours" type="number" min="0" value="0" inputmode="numeric">
+              <button type="button" data-target="nmhours" data-dir="1" aria-label="Increase network management hours">+</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="quote-summary">
+        <h4>Estimate breakdown</h4>
+        <div class="summary-lines" id="summaryLines">
+          <div class="summary-empty">Adjust the fields to build your estimate.</div>
+        </div>
+        <div class="summary-total">
+          <span class="t-label">Estimated total</span>
+          <span class="t-amt" id="totalAmt">R0</span>
+        </div>
+        <p class="quote-note">Rates exclude VAT and travel where applicable. PABX pricing reflects licensing tiers; site visit and consultation rates are based on standard assessments and may vary once scope is confirmed on-site.</p>
+        <a href="#contact" class="quote-cta" id="quoteCta">Request this quote →</a>
       </div>
     </div>
   </div>
