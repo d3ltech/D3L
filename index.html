@@ -239,9 +239,8 @@
   .stepper button:hover{color:var(--data);}
   .stepper input{
     width:52px;text-align:center;background:none;border:none;color:var(--text);
-    font-family:'JetBrains Mono';font-size:14px;-moz-appearance:textfield;
+    font-family:'JetBrains Mono';font-size:14px;
   }
-  .stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   .q-divider{height:1px;background:var(--border);margin:26px 0 26px 18px;}
 
   .quote-summary{background:var(--bg-elev);padding:36px;display:flex;flex-direction:column;}
@@ -494,7 +493,7 @@
             <label for="callouts">Call-outs</label>
             <div class="stepper">
               <button type="button" data-target="callouts" data-dir="-1" aria-label="Decrease call-outs">−</button>
-              <input id="callouts" type="number" min="0" value="0" inputmode="numeric">
+              <input id="callouts" type="text" value="0" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
               <button type="button" data-target="callouts" data-dir="1" aria-label="Increase call-outs">+</button>
             </div>
           </div>
@@ -502,7 +501,7 @@
             <label for="points">Network points</label>
             <div class="stepper">
               <button type="button" data-target="points" data-dir="-1" aria-label="Decrease network points">−</button>
-              <input id="points" type="number" min="0" value="0" inputmode="numeric">
+              <input id="points" type="text" value="0" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
               <button type="button" data-target="points" data-dir="1" aria-label="Increase network points">+</button>
             </div>
           </div>
@@ -517,7 +516,7 @@
             <label for="extensions">Extensions needed</label>
             <div class="stepper">
               <button type="button" data-target="extensions" data-dir="-1" aria-label="Decrease extensions">−</button>
-              <input id="extensions" type="number" min="0" value="0" inputmode="numeric">
+              <input id="extensions" type="text" value="0" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
               <button type="button" data-target="extensions" data-dir="1" aria-label="Increase extensions">+</button>
             </div>
           </div>
@@ -532,7 +531,7 @@
             <label for="ithours">IT services (hrs)</label>
             <div class="stepper">
               <button type="button" data-target="ithours" data-dir="-1" aria-label="Decrease IT hours">−</button>
-              <input id="ithours" type="number" min="0" value="0" inputmode="numeric">
+              <input id="ithours" type="text" value="0" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
               <button type="button" data-target="ithours" data-dir="1" aria-label="Increase IT hours">+</button>
             </div>
           </div>
@@ -540,7 +539,7 @@
             <label for="nmhours">Network mgmt (hrs)</label>
             <div class="stepper">
               <button type="button" data-target="nmhours" data-dir="-1" aria-label="Decrease network management hours">−</button>
-              <input id="nmhours" type="number" min="0" value="0" inputmode="numeric">
+              <input id="nmhours" type="text" value="0" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
               <button type="button" data-target="nmhours" data-dir="1" aria-label="Increase network management hours">+</button>
             </div>
           </div>
@@ -665,6 +664,89 @@
 </footer>
 
 <script>
+  // ---- Quote calculator ----
+  const RATES = { callout: 1750, point: 1250, itHour: 1350, nmHour: 1250, pabxBase: 249, pabxTierStart: 2349, pabxTierStep: 100 };
+
+  function fmtR(n){
+    const rounded = Math.round(n);
+    return 'R' + rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+
+  function pabxCost(ext){
+    if(ext<=0) return 0;
+    if(ext<=10) return ext*RATES.pabxBase;
+    let total = 10*RATES.pabxBase;
+    for(let i=11;i<=ext;i++){
+      total += RATES.pabxTierStart + (i-11)*RATES.pabxTierStep;
+    }
+    return total;
+  }
+
+  function bindStepper(id, min=0, max=999){
+    const input = document.getElementById(id);
+    document.querySelectorAll(`.stepper button[data-target="${id}"]`).forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const dir = parseInt(btn.dataset.dir,10);
+        let val = parseInt(input.value,10) || 0;
+        val = Math.min(max, Math.max(min, val+dir));
+        input.value = val;
+        updateQuote();
+      });
+    });
+    const sanitize = ()=>{
+      let digits = input.value.replace(/[^0-9]/g,'');
+      let val = digits === '' ? min : parseInt(digits,10);
+      val = Math.min(max, Math.max(min, val));
+      input.value = val;
+      updateQuote();
+    };
+    input.addEventListener('input', sanitize);
+    input.addEventListener('change', sanitize);
+    input.addEventListener('blur', sanitize);
+  }
+
+  ['callouts','points','extensions','ithours','nmhours'].forEach(id=>bindStepper(id));
+
+  function updateQuote(){
+    const callouts = parseInt(document.getElementById('callouts').value,10) || 0;
+    const points = parseInt(document.getElementById('points').value,10) || 0;
+    const extensions = parseInt(document.getElementById('extensions').value,10) || 0;
+    const ithours = parseInt(document.getElementById('ithours').value,10) || 0;
+    const nmhours = parseInt(document.getElementById('nmhours').value,10) || 0;
+
+    const lines = [];
+    if(callouts>0) lines.push({label:'Call-outs', sub:`${callouts} × ${fmtR(RATES.callout)}`, amt: callouts*RATES.callout});
+    if(points>0) lines.push({label:'Network points', sub:`${points} × ${fmtR(RATES.point)}`, amt: points*RATES.point});
+    if(extensions>0) lines.push({label:'PABX extensions', sub:`${extensions} extension${extensions>1?'s':''} (tiered)`, amt: pabxCost(extensions)});
+    if(ithours>0) lines.push({label:'IT services consultation', sub:`${ithours} hr × ${fmtR(RATES.itHour)}`, amt: ithours*RATES.itHour});
+    if(nmhours>0) lines.push({label:'Network management', sub:`${nmhours} hr × ${fmtR(RATES.nmHour)}`, amt: nmhours*RATES.nmHour});
+
+    const summaryEl = document.getElementById('summaryLines');
+    const total = lines.reduce((sum,l)=>sum+l.amt,0);
+
+    if(lines.length===0){
+      summaryEl.innerHTML = '<div class="summary-empty">Adjust the fields to build your estimate.</div>';
+    } else {
+      summaryEl.innerHTML = lines.map(l=>`
+        <div class="summary-line">
+          <span class="s-label">${l.label}<span class="s-sub">${l.sub}</span></span>
+          <span class="s-amt">${fmtR(l.amt)}</span>
+        </div>
+      `).join('');
+    }
+    document.getElementById('totalAmt').textContent = fmtR(total);
+
+    const cta = document.getElementById('quoteCta');
+    const messageField = document.getElementById('message');
+    if(lines.length>0 && messageField){
+      const summaryText = lines.map(l=>`${l.label}: ${fmtR(l.amt)}`).join('\n');
+      messageField.value = `Quote request — estimated total ${fmtR(total)}\n\n${summaryText}\n\n(Adjust or add details below)`;
+    }
+  }
+
+  updateQuote();
+
+  // ---- Scroll reveal ----
   const obs = new IntersectionObserver((entries)=>{
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
   }, {threshold:0.12});
