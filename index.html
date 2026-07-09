@@ -9,18 +9,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0A0D12;
-    --bg-elev:#10141B;
-    --surface:#131922;
-    --border:#212A35;
-    --text:#EDF1F3;
-    --text-muted:#8A96A3;
-    --data:#33E0A0;
-    --data-dim:rgba(51,224,160,0.13);
-    --voice:#FFB238;
-    --voice-dim:rgba(255,178,56,0.13);
-    --build:#8B7FFF;
-    --build-dim:rgba(139,127,255,0.13);
+    --bg:#080a18;
+    --bg-elev:#0d0f24;
+    --surface:#11142e;
+    --border:#262a52;
+    --text:#EDF1F8;
+    --text-muted:#8b90b8;
+    --data:#29d3ff;
+    --data-dim:rgba(41,211,255,0.13);
+    --voice:#e6299b;
+    --voice-dim:rgba(230,41,155,0.13);
+    --build:#8b5cf6;
+    --build-dim:rgba(139,92,246,0.13);
+    --btn-ink:#060818;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -37,6 +38,16 @@
   .wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
   @media(max-width:640px){.wrap{padding:0 20px;}}
 
+  /* ---------- BRAND MARK (fades on scroll) ---------- */
+  .brand-logo{
+    position:fixed;top:14px;left:24px;z-index:60;
+    width:72px;height:72px;object-fit:contain;
+    pointer-events:none;
+    transition:opacity .15s linear;
+    will-change:opacity;
+  }
+  @media(max-width:640px){.brand-logo{width:52px;height:52px;top:10px;left:16px;}}
+
   /* ---------- NAV ---------- */
   nav{
     position:fixed;top:0;left:0;right:0;z-index:50;
@@ -46,8 +57,8 @@
   }
   .nav-inner{display:flex;align-items:center;justify-content:space-between;height:68px;}
   .logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk';font-weight:700;font-size:18px;letter-spacing:0.02em;}
-  .logo-mark{width:22px;height:22px;position:relative;flex-shrink:0;}
-  .logo-mark svg{width:100%;height:100%;}
+  .logo-mark{width:26px;height:26px;position:relative;flex-shrink:0;}
+  .logo-mark img{width:100%;height:100%;object-fit:contain;display:block;}
   .nav-links{display:flex;gap:36px;font-size:14px;color:var(--text-muted);}
   .nav-links a{transition:color .2s;}
   .nav-links a:hover{color:var(--data);}
@@ -57,7 +68,7 @@
     padding:9px 18px;border-radius:2px;
     transition:background .2s,color .2s;
   }
-  .nav-cta:hover{background:var(--data);color:#06110C;}
+  .nav-cta:hover{background:var(--data);color:var(--btn-ink);}
   @media(max-width:800px){.nav-links{display:none;}}
 
   /* ---------- HERO ---------- */
@@ -110,8 +121,8 @@
     display:inline-flex;align-items:center;gap:8px;
     transition:all .2s;
   }
-  .btn-primary{background:var(--data);color:#06110C;font-weight:500;}
-  .btn-primary:hover{background:#54ecb6;}
+  .btn-primary{background:var(--data);color:var(--btn-ink);font-weight:500;}
+  .btn-primary:hover{background:#6fe3ff;}
   .btn-ghost{border:1px solid var(--border);color:var(--text);}
   .btn-ghost:hover{border-color:var(--text-muted);}
 
@@ -260,11 +271,11 @@
   .summary-total .t-amt{font-family:'Space Grotesk';font-size:32px;font-weight:700;color:var(--data);}
   .quote-note{font-size:12.5px;color:var(--text-muted);margin-top:18px;line-height:1.6;}
   .quote-cta{
-    margin-top:22px;width:100%;background:var(--data);color:#06110C;border:none;border-radius:2px;
+    margin-top:22px;width:100%;background:var(--data);color:var(--btn-ink);border:none;border-radius:2px;
     padding:14px;font-family:'JetBrains Mono';font-size:13px;font-weight:500;cursor:pointer;text-align:center;
     transition:background .2s;
   }
-  .quote-cta:hover{background:#54ecb6;}
+  .quote-cta:hover{background:#6fe3ff;}
   .quote-cta:disabled{opacity:.4;cursor:not-allowed;}
 
 
@@ -291,11 +302,11 @@
   .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--data);}
   .field textarea{resize:vertical;min-height:90px;}
   .submit-btn{
-    width:100%;background:var(--data);color:#06110C;border:none;border-radius:2px;
+    width:100%;background:var(--data);color:var(--btn-ink);border:none;border-radius:2px;
     padding:14px;font-family:'JetBrains Mono';font-size:13px;font-weight:500;cursor:pointer;
     transition:background .2s;
   }
-  .submit-btn:hover{background:#54ecb6;}
+  .submit-btn:hover{background:#6fe3ff;}
 
   footer{border-top:1px solid var(--border);padding:28px 0;}
   .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
@@ -312,11 +323,13 @@
 </head>
 <body>
 
+<img src="logo.png" alt="D3L Technologies" class="brand-logo" id="brandLogo">
+
 <nav>
   <div class="wrap nav-inner">
     <div class="logo">
       <span class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="2" stroke="#33E0A0" stroke-width="1.5"/><path d="M7 12h4M13 12h4M12 7v4M12 13v4" stroke="#33E0A0" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <img src="logo.png" alt="D3L Technologies logo">
       </span>
       D3L&nbsp;TECHNOLOGIES
     </div>
@@ -354,25 +367,25 @@
         <path class="branch-line b3" d="M200 200 L320 260"/>
         <path class="branch-line b4" d="M200 200 L90 300"/>
 
-        <circle r="4" fill="#33E0A0" class="pulse p1" style="offset-path:path('M200 200 L200 90');"/>
-        <circle r="4" fill="#33E0A0" class="pulse p2" style="offset-path:path('M200 200 L320 150');"/>
-        <circle r="4" fill="#FFB238" class="pulse p3" style="offset-path:path('M200 200 L320 260');"/>
-        <circle r="4" fill="#FFB238" class="pulse p4" style="offset-path:path('M200 200 L90 300');"/>
+        <circle r="4" fill="#29d3ff" class="pulse p1" style="offset-path:path('M200 200 L200 90');"/>
+        <circle r="4" fill="#29d3ff" class="pulse p2" style="offset-path:path('M200 200 L320 150');"/>
+        <circle r="4" fill="#e6299b" class="pulse p3" style="offset-path:path('M200 200 L320 260');"/>
+        <circle r="4" fill="#e6299b" class="pulse p4" style="offset-path:path('M200 200 L90 300');"/>
 
         <circle cx="200" cy="200" r="26" class="node-core"/>
         <text x="200" y="196" text-anchor="middle" class="node-label" fill="#EDF1F3" font-size="11">D3L</text>
         <text x="200" y="209" text-anchor="middle" class="node-label" font-size="8">CORE</text>
 
-        <circle cx="200" cy="90" r="18" class="node" stroke="#33E0A0"/>
+        <circle cx="200" cy="90" r="18" class="node" stroke="#29d3ff"/>
         <text x="200" y="60" text-anchor="middle" class="node-label">CABLING</text>
 
-        <circle cx="320" cy="150" r="18" class="node" stroke="#33E0A0"/>
+        <circle cx="320" cy="150" r="18" class="node" stroke="#29d3ff"/>
         <text x="345" y="130" text-anchor="start" class="node-label">NETWORK MGMT</text>
 
-        <circle cx="320" cy="260" r="18" class="node" stroke="#FFB238"/>
+        <circle cx="320" cy="260" r="18" class="node" stroke="#e6299b"/>
         <text x="345" y="285" text-anchor="start" class="node-label">PABX / 3CX</text>
 
-        <circle cx="90" cy="300" r="18" class="node" stroke="#FFB238"/>
+        <circle cx="90" cy="300" r="18" class="node" stroke="#e6299b"/>
         <text x="90" y="335" text-anchor="middle" class="node-label">PRO. SERVICES</text>
       </svg>
     </div>
@@ -745,6 +758,17 @@
   }
 
   updateQuote();
+
+  // ---- Brand logo fade on scroll ----
+  const brandLogo = document.getElementById('brandLogo');
+  const LOGO_FADE_DISTANCE = 240; // px scrolled before fully faded
+  function updateBrandLogo(){
+    const y = window.scrollY || window.pageYOffset;
+    const opacity = Math.max(0, 1 - y / LOGO_FADE_DISTANCE);
+    brandLogo.style.opacity = opacity;
+  }
+  window.addEventListener('scroll', updateBrandLogo, {passive:true});
+  updateBrandLogo();
 
   // ---- Scroll reveal ----
   const obs = new IntersectionObserver((entries)=>{
